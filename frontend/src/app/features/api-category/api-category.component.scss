@@ -1,0 +1,63 @@
+.header {
+  background: #f7fafc;
+  border: 1px solid #d7e1ea;
+  border-radius: 16px;
+  padding: 1.6rem;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08rem;
+  color: #52708f;
+}
+
+h1 {
+  margin: 0.55rem 0 0.5rem;
+  color: #12304b;
+}
+
+.header p {
+  margin: 0;
+  color: #35506a;
+}
+
+.content {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+article {
+  background: white;
+  border: 1px solid #dce5ed;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+h2 {
+  margin: 0 0 0.55rem;
+  font-size: 1rem;
+  color: #1a3f60;
+}
+
+article p {
+  margin: 0;
+  color: #3d556d;
+  line-height: 1.45;
+}
+
+ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: #3d556d;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 1rem;
+  text-decoration: none;
+  color: #0f3d68;
+  font-weight: 600;
+}

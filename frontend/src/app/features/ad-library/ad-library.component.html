@@ -1,0 +1,84 @@
+<section class="ad-library-shell">
+  <header>
+    <p class="eyebrow">Foco principal AMA</p>
+    <h1>Biblioteca de Anuncios de Meta</h1>
+    <p>
+      Busca anuncios por termino y pais. Puedes enviar el token en la peticion o configurarlo en el backend.
+    </p>
+  </header>
+
+  <section class="filters">
+    <label>
+      Termino
+      <input
+        type="text"
+        [ngModel]="form().searchTerms"
+        (ngModelChange)="updateField('searchTerms', $event)"
+        placeholder="ej. suplementos"
+      />
+    </label>
+
+    <label>
+      Pais (ISO)
+      <input
+        type="text"
+        [ngModel]="form().adReachedCountries"
+        (ngModelChange)="updateField('adReachedCountries', $event)"
+        placeholder="US"
+      />
+    </label>
+
+    <label>
+      Tipo de anuncio
+      <select [ngModel]="form().adType" (ngModelChange)="updateField('adType', $event)">
+        <option value="ALL">ALL</option>
+        <option value="POLITICAL_AND_ISSUE_ADS">POLITICAL_AND_ISSUE_ADS</option>
+      </select>
+    </label>
+
+    <label>
+      Limite
+      <input
+        type="number"
+        min="1"
+        max="100"
+        [ngModel]="form().limit"
+        (ngModelChange)="updateField('limit', +$event)"
+      />
+    </label>
+
+    <label class="full">
+      Access Token (opcional)
+      <input
+        type="password"
+        [ngModel]="form().accessToken"
+        (ngModelChange)="updateField('accessToken', $event)"
+        placeholder="EAAB..."
+      />
+    </label>
+
+    <button type="button" (click)="runSearch()" [disabled]="loading()">
+      {{ loading() ? 'Buscando...' : 'Buscar en Ad Library' }}
+    </button>
+  </section>
+
+  <section class="result-list">
+    @if (results().length === 0) {
+      <p class="empty">Sin resultados aun. Ejecuta una busqueda para ver anuncios.</p>
+    } @else {
+      @for (ad of results(); track ad.id) {
+        <article>
+          <h2>{{ ad.page_name || 'Sin nombre de pagina' }}</h2>
+          <p><strong>Ad ID:</strong> {{ ad.id }}</p>
+          <p><strong>Creado:</strong> {{ ad.ad_creation_time || 'N/A' }}</p>
+          <p><strong>Inicio de delivery:</strong> {{ ad.ad_delivery_start_time || 'N/A' }}</p>
+          @if (ad.ad_snapshot_url) {
+            <a [href]="ad.ad_snapshot_url" target="_blank" rel="noreferrer">Ver snapshot</a>
+          }
+        </article>
+      }
+    }
+  </section>
+</section>
+
+<a routerLink="/" class="back-link">Volver al dashboard</a>

@@ -1,0 +1,239 @@
+.header {
+  background: linear-gradient(120deg, #eef4f8 0%, #f8f4ea 100%);
+  border: 1px solid #d7e2ea;
+  border-radius: 16px;
+  padding: 1.3rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  color: #4a677f;
+}
+
+h1 {
+  margin: 0.4rem 0;
+  color: #11314c;
+}
+
+.header p {
+  margin: 0;
+  color: #355069;
+}
+
+.notice {
+  margin: 0.8rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d2dce7;
+  border-radius: 10px;
+  background: #f8fbfd;
+  color: #2d4a64;
+}
+
+.scope {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.7rem;
+}
+
+label {
+  display: grid;
+  gap: 0.25rem;
+  color: #2c4760;
+  font-size: 0.9rem;
+}
+
+input {
+  border: 1px solid #c7d4e0;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  background: #1a5e93;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.forms-grid,
+.tables-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+article {
+  border: 1px solid #d9e3ec;
+  border-radius: 12px;
+  background: white;
+  padding: 0.85rem;
+}
+
+.table-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+}
+
+.table-controls select,
+.table-controls input {
+  border: 1px solid #c7d4e0;
+  border-radius: 10px;
+  padding: 0.5rem 0.55rem;
+  font: inherit;
+}
+
+h2 {
+  margin: 0 0 0.7rem;
+  font-size: 1rem;
+  color: #123551;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border-bottom: 1px solid #e4ebf2;
+  text-align: left;
+  padding: 0.45rem 0.2rem;
+  font-size: 0.86rem;
+  color: #2f4c66;
+}
+
+td button {
+  padding: 0.35rem 0.55rem;
+  font-size: 0.78rem;
+}
+
+.pager {
+  margin-top: 0.6rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pager button {
+  padding: 0.32rem 0.5rem;
+  font-size: 0.77rem;
+}
+
+.pager span {
+  color: #48627b;
+  font-size: 0.8rem;
+}
+
+.observability {
+  margin-top: 1rem;
+  border: 1px solid #d9e3ec;
+  border-radius: 14px;
+  background: #fbfdff;
+  padding: 0.9rem;
+}
+
+.observability-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.observability-actions {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.observability-header h2 {
+  margin: 0;
+}
+
+.kpis {
+  margin-top: 0.7rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.55rem;
+}
+
+.kpis article {
+  padding: 0.65rem;
+}
+
+.kpi-label {
+  margin: 0;
+  color: #49627c;
+  font-size: 0.77rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06rem;
+}
+
+h3 {
+  margin: 0.3rem 0 0;
+  color: #1c4468;
+}
+
+.maps-grid {
+  margin-top: 0.7rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.7rem;
+}
+
+.maps-grid ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: #2d4c66;
+}
+
+.errors-list {
+  margin-top: 0.75rem;
+}
+
+.errors-list h3 {
+  margin: 0 0 0.4rem;
+}
+
+.empty-observability {
+  margin: 0.65rem 0 0;
+  color: #4a647d;
+  border: 1px dashed #cdd9e5;
+  border-radius: 10px;
+  background: white;
+  padding: 0.7rem;
+}
+
+@media (max-width: 680px) {
+  .table-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .pager {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 0.9rem;
+  text-decoration: none;
+  color: #0f3d68;
+  font-weight: 600;
+}

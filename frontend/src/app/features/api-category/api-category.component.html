@@ -1,0 +1,33 @@
+@if (module(); as item) {
+  <section class="header">
+    <p class="eyebrow">Modulo Meta</p>
+    <h1>{{ item.title }}</h1>
+    <p>{{ item.summary }}</p>
+  </section>
+
+  <section class="content">
+    <article>
+      <h2>Uso principal</h2>
+      <p>{{ item.usage }}</p>
+    </article>
+
+    <article>
+      <h2>Endpoints previstos</h2>
+      <ul>
+        @for (endpoint of item.endpoints; track endpoint) {
+          <li>{{ endpoint }}</li>
+        }
+      </ul>
+    </article>
+
+    <article>
+      <h2>Siguiente paso sugerido</h2>
+      <p>
+        Conecta este modulo al backend en /api/meta y agrega operaciones CRUD segun los permisos
+        del token de Meta Business.
+      </p>
+    </article>
+  </section>
+}
+
+<a routerLink="/" class="back-link">Volver al dashboard</a>

@@ -1,0 +1,29 @@
+<section class="hero">
+  <p class="tag">AMA · API Meta Ads</p>
+  <h1>Capa simple para trabajar con APIs de Meta</h1>
+  <p>
+    Explora modulos por tipo de uso. El foco principal esta en Biblioteca de Anuncios,
+    con un flujo de busqueda listo para integrarse con token de Meta.
+  </p>
+</section>
+
+<section class="module-grid">
+  @for (module of modules(); track module.slug) {
+    <article class="module-card" [class.focus]="module.focus">
+      <div class="module-header">
+        <h2>{{ module.title }}</h2>
+        <span class="status" [class]="'status ' + module.status">{{ badgeLabel(module.status) }}</span>
+      </div>
+      <p class="summary">{{ module.summary }}</p>
+      <p class="usage">{{ module.usage }}</p>
+      <ul>
+        @for (endpoint of module.endpoints; track endpoint) {
+          <li>{{ endpoint }}</li>
+        }
+      </ul>
+      <a [routerLink]="module.slug === 'ad-library' ? '/biblioteca-anuncios' : module.slug === 'marketing-management' ? '/marketing-management' : '/api/' + module.slug">
+        Abrir modulo
+      </a>
+    </article>
+  }
+</section>

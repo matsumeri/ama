@@ -1,0 +1,22 @@
+<div class="page-bg"></div>
+
+<div class="app-shell">
+  <header>
+    <div class="brand">
+      <span>AMA</span>
+      <p>API Meta Ads</p>
+    </div>
+
+    <nav>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Modulos
+      </a>
+      <a routerLink="/marketing-management" routerLinkActive="active">Marketing</a>
+      <a routerLink="/biblioteca-anuncios" routerLinkActive="active">Biblioteca de Anuncios</a>
+    </nav>
+  </header>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

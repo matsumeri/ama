@@ -1,0 +1,432 @@
+<section class="header">
+  <p class="eyebrow">Modulo funcional</p>
+  <h1>Marketing Management</h1>
+  <p>Administra campañas, ad sets y ads desde AMA con operaciones rápidas.</p>
+</section>
+
+@if (message()) {
+  <p class="notice">{{ message() }}</p>
+}
+
+<section class="scope">
+  <label>
+    Ad Account ID (sin act_)
+    <input type="text" [ngModel]="adAccountId()" (ngModelChange)="adAccountId.set($event)" />
+  </label>
+
+  <label>
+    Access Token (opcional)
+    <input type="password" [ngModel]="accessToken()" (ngModelChange)="accessToken.set($event)" />
+  </label>
+
+  <button type="button" (click)="refreshAll()" [disabled]="loading()">
+    {{ loading() ? 'Cargando...' : 'Cargar entidades' }}
+  </button>
+</section>
+
+<section class="forms-grid">
+  <article>
+    <h2>Nueva campaña</h2>
+    <label>
+      Nombre
+      <input
+        type="text"
+        [ngModel]="campaignForm().name"
+        (ngModelChange)="updateCampaignName($event)"
+      />
+    </label>
+
+    <label>
+      Objective
+      <input
+        type="text"
+        [ngModel]="campaignForm().objective"
+        (ngModelChange)="updateCampaignObjective($event)"
+      />
+    </label>
+
+    <button type="button" (click)="createCampaign()">Crear campaña</button>
+  </article>
+
+  <article>
+    <h2>Nuevo Ad Set</h2>
+    <label>
+      Nombre
+      <input
+        type="text"
+        [ngModel]="adSetForm().name"
+        (ngModelChange)="updateAdSetName($event)"
+      />
+    </label>
+
+    <label>
+      Campaign ID
+      <input
+        type="text"
+        [ngModel]="adSetForm().campaignId"
+        (ngModelChange)="updateAdSetCampaignId($event)"
+      />
+    </label>
+
+    <label>
+      Daily Budget (opcional)
+      <input
+        type="text"
+        [ngModel]="adSetForm().dailyBudget"
+        (ngModelChange)="updateAdSetDailyBudget($event)"
+      />
+    </label>
+
+    <button type="button" (click)="createAdSet()">Crear Ad Set</button>
+  </article>
+
+  <article>
+    <h2>Nuevo Ad</h2>
+    <label>
+      Nombre
+      <input
+        type="text"
+        [ngModel]="adForm().name"
+        (ngModelChange)="updateAdName($event)"
+      />
+    </label>
+
+    <label>
+      AdSet ID
+      <input
+        type="text"
+        [ngModel]="adForm().adsetId"
+        (ngModelChange)="updateAdAdSetId($event)"
+      />
+    </label>
+
+    <label>
+      Creative ID
+      <input
+        type="text"
+        [ngModel]="adForm().creative.creative_id"
+        (ngModelChange)="updateAdCreativeId($event)"
+      />
+    </label>
+
+    <button type="button" (click)="createAd()">Crear Ad</button>
+  </article>
+</section>
+
+<section class="tables-grid">
+  <article>
+    <h2>Campañas</h2>
+    <div class="table-controls">
+      <input
+        type="text"
+        placeholder="Filtrar por nombre, id o status"
+        [ngModel]="campaignTable().query"
+        (ngModelChange)="setQuery('campaigns', $event)"
+      />
+      <select
+        [ngModel]="campaignTable().status"
+        (ngModelChange)="setStatusFilter('campaigns', $event)"
+      >
+        @for (status of statusFilterOptions; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+      <input
+        type="date"
+        [ngModel]="campaignTable().dateFrom"
+        (ngModelChange)="setDateFrom('campaigns', $event)"
+      />
+      <input
+        type="date"
+        [ngModel]="campaignTable().dateTo"
+        (ngModelChange)="setDateTo('campaigns', $event)"
+      />
+      <select
+        [ngModel]="campaignTable().sortBy"
+        (ngModelChange)="setSortBy('campaigns', $event)"
+      >
+        @for (option of sortFieldOptions; track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+      <select
+        [ngModel]="campaignTable().sortDirection"
+        (ngModelChange)="setSortDirection('campaigns', $event)"
+      >
+        <option value="asc">asc</option>
+        <option value="desc">desc</option>
+      </select>
+      <input
+        type="number"
+        min="3"
+        max="50"
+        [ngModel]="campaignTable().pageSize"
+        (ngModelChange)="setPageSize('campaigns', +$event)"
+      />
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Status</th>
+          <th>ID</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of pagedByKind('campaigns'); track item.id) {
+          <tr>
+            <td>{{ item.name || '-' }}</td>
+            <td>{{ item.status || item.effective_status || '-' }}</td>
+            <td>{{ item.id }}</td>
+            <td><button type="button" (click)="pauseCampaign(item.id)">Pausar</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <div class="pager">
+      <span>{{ totalFiltered('campaigns') }} resultados</span>
+      <button type="button" (click)="prevPage('campaigns')" [disabled]="!canPrev('campaigns')">Prev</button>
+      <span>Pag {{ currentPage('campaigns') }} / {{ totalPages('campaigns') }}</span>
+      <button type="button" (click)="nextPage('campaigns')" [disabled]="!canNext('campaigns')">Next</button>
+    </div>
+  </article>
+
+  <article>
+    <h2>Ad Sets</h2>
+    <div class="table-controls">
+      <input
+        type="text"
+        placeholder="Filtrar por nombre, id o status"
+        [ngModel]="adSetTable().query"
+        (ngModelChange)="setQuery('adSets', $event)"
+      />
+      <select
+        [ngModel]="adSetTable().status"
+        (ngModelChange)="setStatusFilter('adSets', $event)"
+      >
+        @for (status of statusFilterOptions; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+      <input
+        type="date"
+        [ngModel]="adSetTable().dateFrom"
+        (ngModelChange)="setDateFrom('adSets', $event)"
+      />
+      <input
+        type="date"
+        [ngModel]="adSetTable().dateTo"
+        (ngModelChange)="setDateTo('adSets', $event)"
+      />
+      <select
+        [ngModel]="adSetTable().sortBy"
+        (ngModelChange)="setSortBy('adSets', $event)"
+      >
+        @for (option of sortFieldOptions; track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+      <select
+        [ngModel]="adSetTable().sortDirection"
+        (ngModelChange)="setSortDirection('adSets', $event)"
+      >
+        <option value="asc">asc</option>
+        <option value="desc">desc</option>
+      </select>
+      <input
+        type="number"
+        min="3"
+        max="50"
+        [ngModel]="adSetTable().pageSize"
+        (ngModelChange)="setPageSize('adSets', +$event)"
+      />
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Status</th>
+          <th>ID</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of pagedByKind('adSets'); track item.id) {
+          <tr>
+            <td>{{ item.name || '-' }}</td>
+            <td>{{ item.status || item.effective_status || '-' }}</td>
+            <td>{{ item.id }}</td>
+            <td><button type="button" (click)="pauseAdSet(item.id)">Pausar</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <div class="pager">
+      <span>{{ totalFiltered('adSets') }} resultados</span>
+      <button type="button" (click)="prevPage('adSets')" [disabled]="!canPrev('adSets')">Prev</button>
+      <span>Pag {{ currentPage('adSets') }} / {{ totalPages('adSets') }}</span>
+      <button type="button" (click)="nextPage('adSets')" [disabled]="!canNext('adSets')">Next</button>
+    </div>
+  </article>
+
+  <article>
+    <h2>Ads</h2>
+    <div class="table-controls">
+      <input
+        type="text"
+        placeholder="Filtrar por nombre, id o status"
+        [ngModel]="adTable().query"
+        (ngModelChange)="setQuery('ads', $event)"
+      />
+      <select
+        [ngModel]="adTable().status"
+        (ngModelChange)="setStatusFilter('ads', $event)"
+      >
+        @for (status of statusFilterOptions; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+      <input
+        type="date"
+        [ngModel]="adTable().dateFrom"
+        (ngModelChange)="setDateFrom('ads', $event)"
+      />
+      <input
+        type="date"
+        [ngModel]="adTable().dateTo"
+        (ngModelChange)="setDateTo('ads', $event)"
+      />
+      <select
+        [ngModel]="adTable().sortBy"
+        (ngModelChange)="setSortBy('ads', $event)"
+      >
+        @for (option of sortFieldOptions; track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+      <select
+        [ngModel]="adTable().sortDirection"
+        (ngModelChange)="setSortDirection('ads', $event)"
+      >
+        <option value="asc">asc</option>
+        <option value="desc">desc</option>
+      </select>
+      <input
+        type="number"
+        min="3"
+        max="50"
+        [ngModel]="adTable().pageSize"
+        (ngModelChange)="setPageSize('ads', +$event)"
+      />
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Status</th>
+          <th>ID</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of pagedByKind('ads'); track item.id) {
+          <tr>
+            <td>{{ item.name || '-' }}</td>
+            <td>{{ item.status || item.effective_status || '-' }}</td>
+            <td>{{ item.id }}</td>
+            <td><button type="button" (click)="pauseAd(item.id)">Pausar</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <div class="pager">
+      <span>{{ totalFiltered('ads') }} resultados</span>
+      <button type="button" (click)="prevPage('ads')" [disabled]="!canPrev('ads')">Prev</button>
+      <span>Pag {{ currentPage('ads') }} / {{ totalPages('ads') }}</span>
+      <button type="button" (click)="nextPage('ads')" [disabled]="!canNext('ads')">Next</button>
+    </div>
+  </article>
+</section>
+
+<section class="observability">
+  <div class="observability-header">
+    <h2>Observabilidad API</h2>
+    <div class="observability-actions">
+      <button type="button" (click)="refreshObservability()" [disabled]="loadingObservability()">
+        {{ loadingObservability() ? 'Actualizando...' : 'Actualizar panel' }}
+      </button>
+      <button type="button" (click)="resetObservability()" [disabled]="resettingObservability()">
+        {{ resettingObservability() ? 'Reseteando...' : 'Reset metrics' }}
+      </button>
+    </div>
+  </div>
+
+  @if (observability(); as snapshot) {
+    <div class="kpis">
+      <article>
+        <p class="kpi-label">Uptime</p>
+        <h3>{{ snapshot.health.uptimeSec }}s</h3>
+      </article>
+      <article>
+        <p class="kpi-label">Meta requests</p>
+        <h3>{{ snapshot.metrics.totalMetaRequests }}</h3>
+      </article>
+      <article>
+        <p class="kpi-label">Meta retries</p>
+        <h3>{{ snapshot.metrics.totalMetaRetries }}</h3>
+      </article>
+      <article>
+        <p class="kpi-label">Meta errors</p>
+        <h3>{{ snapshot.metrics.totalMetaErrors }}</h3>
+      </article>
+    </div>
+
+    <div class="maps-grid">
+      <article>
+        <h3>Retries por status</h3>
+        <ul>
+          @for (item of formatCounterMap(snapshot.metrics.retriesByStatus); track item.key) {
+            <li><strong>{{ item.key }}:</strong> {{ item.value }}</li>
+          }
+        </ul>
+      </article>
+      <article>
+        <h3>Errores Meta por codigo</h3>
+        <ul>
+          @for (item of formatCounterMap(snapshot.metrics.errorsByCode); track item.key) {
+            <li><strong>{{ item.key }}:</strong> {{ item.value }}</li>
+          }
+        </ul>
+      </article>
+    </div>
+
+    <article class="errors-list">
+      <h3>Ultimos errores</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Code</th>
+            <th>Status</th>
+            <th>Mensaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of snapshot.metrics.lastErrors; track row.timestamp + row.message) {
+            <tr>
+              <td>{{ row.timestamp }}</td>
+              <td>{{ row.code ?? '-' }}</td>
+              <td>{{ row.status ?? '-' }}</td>
+              <td>{{ row.message }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </article>
+  } @else {
+    <p class="empty-observability">Sin datos todavia. Carga entidades o actualiza el panel.</p>
+  }
+</section>
+
+<a routerLink="/" class="back-link">Volver al dashboard</a>
